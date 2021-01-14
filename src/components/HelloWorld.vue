@@ -35,6 +35,14 @@
             <th>Post</th>
           </tr>
         </thead>
+        <tbody>
+          <tr v-for="item in items" :key="item.id">
+            <td>{{ item.name }}</td>
+            <td>{{ item.age }}</td>
+            <td>{{ item.gender }}</td>
+            <td>{{ item.post }}</td>
+          </tr>
+        </tbody>
       </table>
     </div>
   </div>
@@ -78,20 +86,32 @@ export default {
         gender: "M",
         post: "",
       },
+      items: [],
     };
   },
   created: function() {
-    (function() {
-      var userId = firebase.auth().currentUser.uid;
+    var userId = firebase.auth().currentUser.uid;
 
-      firebase
-        .database()
-        .ref("/employees/" + userId)
-        .once("value")
-        .then((snapshot) => {
-          console.log(snapshot.val());
-        });
-    })();
+    firebase
+      .database()
+      .ref("/employees/" + userId)
+      .on(
+        "value",
+        function(snapshot) {
+          var snapshotVal = snapshot.val();
+          var items = snapshotVal && Object.values(snapshotVal);
+          if (Array.isArray(items)) {
+            this.items = items;
+          }
+        }.bind(this)
+      );
+  },
+  destroyed: function() {
+    var userId = firebase.auth().currentUser.uid;
+    firebase
+      .database()
+      .ref("/employees/" + userId)
+      .off();
   },
   methods: {
     onClickLogout: function() {
@@ -146,5 +166,16 @@ form {
 
 form > * {
   margin: 8px;
+}
+
+table {
+  margin: 16px auto;
+  border: 1px solid grey;
+  background: lightgrey;
+}
+
+td {
+  background: white;
+  border: 1px solid grey;
 }
 </style>
