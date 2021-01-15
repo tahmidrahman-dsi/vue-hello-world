@@ -16,14 +16,18 @@ export function configureFirebaseSDK() {
   firebase.analytics();
 }
 
-export function onAuthStateChanged(onSuccess, onFail) {
+export function onAuthStateChanged(onSignIn, onSignOut) {
   firebase.auth().onAuthStateChanged(function(user) {
     if (user) {
-      onSuccess(user);
+      onSignIn(user);
     } else {
-      onFail();
+      onSignOut();
     }
   });
+}
+
+export function signIn(email, password) {
+  return firebase.auth().signInWithEmailAndPassword(email, password);
 }
 
 export function signOut(callback) {
@@ -31,4 +35,8 @@ export function signOut(callback) {
     .auth()
     .signOut()
     .then(callback);
+}
+
+export function isAuthenticated() {
+  return Boolean(firebase.auth().currentUser);
 }

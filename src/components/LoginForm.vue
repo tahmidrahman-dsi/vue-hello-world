@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import firebase from "firebase";
+import { signIn } from "../authUtils";
 
 export default {
   name: "LoginForm",
@@ -22,9 +22,7 @@ export default {
   },
   methods: {
     onSubmit: function() {
-      firebase
-        .auth()
-        .signInWithEmailAndPassword(this.email, this.password)
+      signIn(this.email, this.password)
         .then((user) => console.log(user))
         .catch((error) => {
           var errorCode = error.code;

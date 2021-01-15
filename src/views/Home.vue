@@ -1,5 +1,6 @@
 <template>
-  <div class="hello">
+  <div class="home">
+    <Header />
     <p>Congratulations! You are logged in</p>
 
     <template v-if="viewpane">
@@ -37,7 +38,11 @@
         </thead>
         <tbody>
           <tr v-for="item in items" :key="item.id">
-            <td>{{ item.name }}</td>
+            <td>
+              <router-link v-bind:to="`/details/${item.id}`">
+                {{ item.name }}
+              </router-link>
+            </td>
             <td>{{ item.age }}</td>
             <td>{{ item.gender }}</td>
             <td>{{ item.post }}</td>
@@ -55,6 +60,7 @@ import {
   detachDBConnection,
 } from "../dbUtils";
 import { signOut } from "../authUtils";
+import Header from "../components/Header";
 
 function addEmployee() {
   var employee = this.form;
@@ -62,7 +68,7 @@ function addEmployee() {
   return insertEmployee(employee);
 }
 export default {
-  name: "HelloWorld",
+  name: "Home",
   props: {
     msg: String,
   },
@@ -78,11 +84,20 @@ export default {
       items: [],
     };
   },
+  components: {
+    Header,
+  },
   created: function() {
     establishDBConnenction(
       function(snapshot) {
         var snapshotVal = snapshot.val();
-        var items = snapshotVal && Object.values(snapshotVal);
+        var items =
+          snapshotVal &&
+          Object.entries(snapshotVal).map(([key, item]) => ({
+            id: key,
+            ...item,
+          }));
+
         if (Array.isArray(items)) {
           this.items = items;
         }
