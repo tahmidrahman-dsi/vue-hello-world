@@ -49,28 +49,17 @@
 </template>
 
 <script>
-import firebase from "firebase";
+import {
+  insertEmployee,
+  establishDBConnenction,
+  detachDBConnection,
+} from "../dbUtils";
+import { signOut } from "../authUtils";
 
 function addEmployee() {
-  var userId = firebase.auth().currentUser.uid;
-  var writeData = {
-    name: this.form.name,
-    age: this.form.age,
-    gender: this.form.gender,
-    post: this.form.post,
-  };
+  var employee = this.form;
 
-  var newPostKey = firebase
-    .database()
-    .ref()
-    .child("employees")
-    .child(userId)
-    .push().key;
-
-  return firebase
-    .database()
-    .ref("employees/" + userId + "/" + newPostKey)
-    .set(writeData);
+  return insertEmployee(employee);
 }
 export default {
   name: "HelloWorld",
@@ -90,37 +79,24 @@ export default {
     };
   },
   created: function() {
-    var userId = firebase.auth().currentUser.uid;
-
-    firebase
-      .database()
-      .ref("/employees/" + userId)
-      .on(
-        "value",
-        function(snapshot) {
-          var snapshotVal = snapshot.val();
-          var items = snapshotVal && Object.values(snapshotVal);
-          if (Array.isArray(items)) {
-            this.items = items;
-          }
-        }.bind(this)
-      );
+    establishDBConnenction(
+      function(snapshot) {
+        var snapshotVal = snapshot.val();
+        var items = snapshotVal && Object.values(snapshotVal);
+        if (Array.isArray(items)) {
+          this.items = items;
+        }
+      }.bind(this)
+    );
   },
   destroyed: function() {
-    var userId = firebase.auth().currentUser.uid;
-    firebase
-      .database()
-      .ref("/employees/" + userId)
-      .off();
+    detachDBConnection();
   },
   methods: {
     onClickLogout: function() {
-      firebase
-        .auth()
-        .signOut()
-        .then(() => {
-          console.log("logged out successfully!");
-        });
+      signOut(function() {
+        console.log("Logged out");
+      });
     },
     onClickTogglePane: function() {
       this.viewpane = !this.viewpane;
