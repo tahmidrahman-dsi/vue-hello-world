@@ -11,21 +11,21 @@
       Add employee
     </button>
     <button v-on:click.prevent="onClickLogout">Logout</button>
-    <form v-if="viewpane" v-on:submit.prevent="onSubmitEmployeeData">
-      <label for="name">Name</label>
-      <input id="name" v-model="form.name" />
-      <label for="age">Age</label>
-      <input id="age" v-model="form.age" type="number" />
-      <label for="gender">Gender</label>
-      <select id="gender" v-model="form.gender">
-        <option value="M">Male</option>
-        <option value="F">Female</option>
-      </select>
-      <label for="post">Post</label>
-      <input id="post" v-model="form.post" />
-      <button>Add</button>
-    </form>
-    <div>
+    <div class="Table-wrapper">
+      <form v-if="viewpane" v-on:submit.prevent="onSubmitEmployeeData">
+        <label for="name">Name</label>
+        <input id="name" v-model="form.name" />
+        <label for="age">Age</label>
+        <input id="age" v-model="form.age" type="number" />
+        <label for="gender">Gender</label>
+        <select id="gender" v-model="form.gender">
+          <option value="M">Male</option>
+          <option value="F">Female</option>
+        </select>
+        <label for="post">Post</label>
+        <input id="post" v-model="form.post" />
+        <button>Add</button>
+      </form>
       <table>
         <thead>
           <tr>
@@ -132,26 +132,47 @@ a {
 }
 
 form {
-  border: 1px solid grey;
-  border-radius: 2px;
+  background: #f2f2f2;
+  border-radius: 6px;
   padding: 16px;
   display: flex;
+  flex: 1;
+  flex-direction: column;
   flex-wrap: wrap;
   margin: 8px 0;
+  max-width: 600px;
 }
 
-form > * {
-  margin: 8px;
+label {
+  text-align: left;
 }
 
+form > *:not(label) {
+  padding: 6px;
+  margin-bottom: 8px;
+}
+
+.Table-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.Table-wrapper:first-child {
+  margin-right: 16px;
+}
 table {
   margin: 16px auto;
+  border-radius: 6px;
   border: 1px solid grey;
   background: lightgrey;
 }
 
+th {
+  padding: 8px;
+}
+
 td {
   background: white;
-  border: 1px solid grey;
+  padding: 8px;
 }
 </style>
