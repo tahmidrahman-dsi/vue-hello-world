@@ -1,5 +1,18 @@
 <template>
   <div class="details">
-    <h1>This is an about page</h1>
+    <Header />
+    <EmployeeForm mode="update" />
   </div>
 </template>
+
+<script>
+import Header from "../components/Header";
+import EmployeeForm from "../components/EmployeeForm";
+
+export default {
+  components: {
+    Header,
+    EmployeeForm,
+  },
+};
+</script>

@@ -13,20 +13,7 @@
     </button>
     <button v-on:click.prevent="onClickLogout">Logout</button>
     <div class="Table-wrapper">
-      <form v-if="viewpane" v-on:submit.prevent="onSubmitEmployeeData">
-        <label for="name">Name</label>
-        <input id="name" v-model="form.name" />
-        <label for="age">Age</label>
-        <input id="age" v-model="form.age" type="number" />
-        <label for="gender">Gender</label>
-        <select id="gender" v-model="form.gender">
-          <option value="M">Male</option>
-          <option value="F">Female</option>
-        </select>
-        <label for="post">Post</label>
-        <input id="post" v-model="form.post" />
-        <button>Add</button>
-      </form>
+      <EmployeeForm v-if="viewpane" mode="add" />
       <table>
         <thead>
           <tr>
@@ -34,6 +21,7 @@
             <th>Age</th>
             <th>Gender</th>
             <th>Post</th>
+            <th>Action</th>
           </tr>
         </thead>
         <tbody>
@@ -46,6 +34,9 @@
             <td>{{ item.age }}</td>
             <td>{{ item.gender }}</td>
             <td>{{ item.post }}</td>
+            <td>
+              <DeleteButton v-bind:id="item.id" />
+            </td>
           </tr>
         </tbody>
       </table>
@@ -54,24 +45,14 @@
 </template>
 
 <script>
-import {
-  insertEmployee,
-  establishDBConnenction,
-  detachDBConnection,
-} from "../dbUtils";
+import { establishDBConnenction, detachDBConnection } from "../dbUtils";
 import { signOut } from "../authUtils";
 import Header from "../components/Header";
+import EmployeeForm from "../components/EmployeeForm";
+import DeleteButton from "../components/DeleteButton";
 
-function addEmployee() {
-  var employee = this.form;
-
-  return insertEmployee(employee);
-}
 export default {
   name: "Home",
-  props: {
-    msg: String,
-  },
   data: function() {
     return {
       viewpane: false,
@@ -86,6 +67,8 @@ export default {
   },
   components: {
     Header,
+    EmployeeForm,
+    DeleteButton,
   },
   created: function() {
     establishDBConnenction(
@@ -116,12 +99,6 @@ export default {
     onClickTogglePane: function() {
       this.viewpane = !this.viewpane;
     },
-    onSubmitEmployeeData: function() {
-      addEmployee
-        .apply(this, [])
-        .then(console.log)
-        .catch(console.log);
-    },
   },
 };
 </script>
@@ -144,27 +121,6 @@ a {
 }
 .toggle {
   margin-right: 16px;
-}
-
-form {
-  background: #f2f2f2;
-  border-radius: 6px;
-  padding: 16px;
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  flex-wrap: wrap;
-  margin: 8px 0;
-  max-width: 600px;
-}
-
-label {
-  text-align: left;
-}
-
-form > *:not(label) {
-  padding: 6px;
-  margin-bottom: 8px;
 }
 
 .Table-wrapper {
