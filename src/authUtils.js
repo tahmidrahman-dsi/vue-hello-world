@@ -1,15 +1,24 @@
 import firebase from "firebase";
 
+/**
+ *
+ * Exposing the config snippet
+ * https://stackoverflow.com/a/37484053/10318707
+ * 2021-01-18
+ *
+ *
+ */
+
 export function configureFirebaseSDK() {
   var firebaseConfig = {
-    apiKey: process.env.VUE_APP_FIREBASE_API_KEY,
-    authDomain: process.env.VUE_APP_FIREBASE_AUTH_DOMAIN,
-    projectId: process.env.VUE_APP_FIREBASE_PROJECT_ID,
-    storageBucket: process.env.VUE_APP_FIREBASE_STORAGE_BUCKET,
-    messagingSenderId: process.env.VUE_APP_FIREBASE_MESSAGING_SENDER_ID,
-    appId: process.env.VUE_APP_FIREBASE_APP_ID,
-    measurementId: process.env.VUE_APP_FIREBASE_MEASUREMENT_ID,
-    databaseURL: process.env.VUE_APP_FIREBASE_RT_DATABASE_URL,
+    apiKey: "AIzaSyAazgQ9wCtQ3VWvF72LRhEeILB6OSxSTD0",
+    authDomain: "test-gcp-8a76d.firebaseapp.com",
+    projectId: "test-gcp-8a76d",
+    storageBucket: "test-gcp-8a76d.appspot.com",
+    messagingSenderId: "545365015874",
+    appId: "1:545365015874:web:47668fa793349602985cdb",
+    measurementId: "G-XCKG085125",
+    databaseURL: "test-gcp-8a76d-default-rtdb.firebaseio.com",
   };
 
   firebase.initializeApp(firebaseConfig);
