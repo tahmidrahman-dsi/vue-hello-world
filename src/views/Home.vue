@@ -91,7 +91,7 @@ export default {
   },
   methods: {
     onClickLogout: function() {
-      signOut(function() {
+      signOut().then(function() {
         console.log("Logged out");
       });
     },

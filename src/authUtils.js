@@ -30,11 +30,8 @@ export function signIn(email, password) {
   return firebase.auth().signInWithEmailAndPassword(email, password);
 }
 
-export function signOut(callback) {
-  firebase
-    .auth()
-    .signOut()
-    .then(callback);
+export function signOut() {
+  return firebase.auth().signOut();
 }
 
 export function isAuthenticated() {
