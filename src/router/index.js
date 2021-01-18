@@ -48,7 +48,9 @@ function onSignIn() {
 }
 
 function onSignOut() {
-  router.push({ name: "Login" });
+  if (window.location.pathname != "/login") {
+    router.push({ name: "Login" });
+  }
 }
 
 onAuthStateChanged(onSignIn, onSignOut);
