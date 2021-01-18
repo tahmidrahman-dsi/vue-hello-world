@@ -72,11 +72,10 @@ export default {
   },
   created: function() {
     establishDBConnenction(
-      function(snapshot) {
-        var snapshotVal = snapshot.val();
+      function(value) {
         var items =
-          snapshotVal &&
-          Object.entries(snapshotVal).map(([key, item]) => ({
+          !!value &&
+          Object.entries(value).map(([key, item]) => ({
             id: key,
             ...item,
           }));

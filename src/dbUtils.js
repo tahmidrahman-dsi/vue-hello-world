@@ -70,7 +70,9 @@ export function establishDBConnenction(listener) {
   firebase
     .database()
     .ref("/employees/" + userId)
-    .on("value", listener);
+    .on("value", function(snapshot) {
+      listener(snapshot.val());
+    });
 }
 
 export function detachDBConnection() {
